@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     private EntityManager entityManager;
 
     @Override
-//    @EntityGraph(attributePaths = { "roles"})
+
     public User findByEmail(String email) {
         Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = : e");
         query.setParameter("e", email);
@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-//    @EntityGraph(attributePaths = { "roles"})
+
     public List<User> getUsers() {
         return entityManager.createQuery("SELECT u FROM User u").getResultList();
     }
@@ -59,17 +59,6 @@ public class UserRepositoryImpl implements UserRepository {
         return true;
     }
 
-    @Override
-    public Optional<User> tryGetUserByUsername(String username) {
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u join fetch u.roles r where u.firstName = :username", User.class);
-        query.setParameter("username", username);
-        try {
-            Optional<User> rev = Optional.ofNullable(query.getSingleResult());
-            return rev;
-        } catch (Exception e) {
-            return Optional.empty();
 
-        }
-    }
 }
 

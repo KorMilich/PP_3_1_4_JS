@@ -14,5 +14,4 @@ public interface UserRepository {
     void delete(int id);
     boolean exist(String email);
 
-    Optional<User> tryGetUserByUsername(String username);
 }

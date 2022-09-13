@@ -27,7 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @EntityGraph(attributePaths = {"roles"})
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         return userRepository.findByEmail(username);
