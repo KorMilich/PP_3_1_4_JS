@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,14 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
+    @EntityGraph(attributePaths = {"roles"})
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
 
-        if(user == null) {
-            throw new UsernameNotFoundException(String.format("Email '%' not found", user.getEmail()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(), getAuthority(user.getRoles()));
+        return userRepository.findByEmail(username);
     }
 
     private Collection<? extends GrantedAuthority> getAuthority(Collection<Role> roles) {
